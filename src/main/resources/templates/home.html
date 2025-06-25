@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- ✅ head fragment -->
+<head th:replace="~{fragments/head :: commonHead('home')}"></head>
+
+<body>
+<!-- ✅ 알림 모달 -->
+<!--<div th:replace="~{fragments/alert-modal :: alertModal}"></div>-->
+
+<!-- ✅ 네비게이션 바 -->
+<!--<div th:replace="~{fragments/navbar :: navbar('home')}"></div>-->
+
+<!-- ✅ 본문 -->
+<div class="container py-4">
+    <h1>🎉 홈 페이지입니다!</h1>
+    <p>여기에 원하는 콘텐츠를 넣으세요.</p>
+</div>
+
+<!-- ✅ 푸터 -->
+<!--<div th:replace="~{fragments/footer :: commonFooter}"></div>-->
+
+<!-- ✅ 공통 JS -->
+<div th:replace="~{fragments/script :: commonScript}"></div>
+</body>
+</html>
