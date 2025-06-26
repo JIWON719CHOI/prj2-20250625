@@ -43,7 +43,7 @@ public class MemberController {
         memberService.add(dto); // 🚀 서비스가 모든 로직을 책임집니다
 
         rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "회원 가입되었습니다."));
-        return "redirect:/board/list"; // 또는 원하는 페이지
+        return "redirect:/member/edit-profile?id=" + dto.getId();
     }
 
     @GetMapping("/login")
@@ -80,20 +80,20 @@ public class MemberController {
         return "redirect:/home";
     }
 
-    @GetMapping("/detail")
-    public String detail(@RequestParam String id, Model model) {
+    @GetMapping("/profile")
+    public String profile(@RequestParam String id, Model model) {
         model.addAttribute("member", memberService.get(id));
-        return "/member/detail";
+        return "/member/profile";
     }
 
     @GetMapping("/edit-profile")
     public String editProfileForm(@RequestParam String id, Model model) {
-        MemberDetailDto detail = memberService.get(id);
+        MemberProfileDto profile = memberService.get(id);
 
         ProfileUpdateDto form = new ProfileUpdateDto();
-        form.setId(detail.getId());
-        form.setName(detail.getName());
-        form.setInfo(detail.getInfo());
+        form.setId(profile.getId());
+        form.setName(profile.getName());
+        form.setInfo(profile.getInfo());
 
         model.addAttribute("form", form);
         return "member/edit-profile";  // /templates/member/edit-profile.html
@@ -112,7 +112,7 @@ public class MemberController {
 
         memberService.updateProfile(dto);
         rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "프로필이 수정되었습니다."));
-        return "redirect:/member/detail?id=" + dto.getId();
+        return "redirect:/member/profile?id=" + dto.getId();
     }
 
     @GetMapping("/change-password")
@@ -136,7 +136,7 @@ public class MemberController {
 
         memberService.changePassword(dto);
         rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "비밀번호가 변경되었습니다."));
-        return "redirect:/member/detail?id=" + dto.getId();
+        return "redirect:/member/profile?id=" + dto.getId();
     }
 
     // 탈퇴 확인 페이지(혹은 모달)
@@ -157,6 +157,5 @@ public class MemberController {
                 Map.of("code", "success", "message", "정상적으로 탈퇴 처리되었습니다."));
         return "redirect:/home";
     }
-
 
 }

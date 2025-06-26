@@ -1,7 +1,8 @@
 package com.example.prj2.domain.member.service;
 
 import com.example.prj2.domain.board.repo.BoardRepository;
-import com.example.prj2.domain.member.dto.MemberDetailDto;
+import com.example.prj2.domain.comment.repo.CommentRepository;
+import com.example.prj2.domain.member.dto.MemberProfileDto;
 import com.example.prj2.domain.member.dto.PasswordChangeDto;
 import com.example.prj2.domain.member.dto.ProfileUpdateDto;
 import com.example.prj2.domain.member.dto.SignupDto;
@@ -35,7 +36,6 @@ public class MemberService {
         if (memberRepository.existsByName(dto.getName())) {
             throw new DuplicateMemberException("이미 사용 중인 이름 입니다.");
         }
-
         memberRepository.save(dto.toEntity());
     }
 
@@ -50,17 +50,9 @@ public class MemberService {
                 return true;
             }
         }
-
         return false;
     }
 
-    public MemberDetailDto get(String id) {
-        return memberRepository
-                .findProjectedById(id)
-                .orElseThrow(() -> new MemberNotFoundException("회원이 없습니다."));
-    }
-
-    @Transactional
     public void updateProfile(ProfileUpdateDto dto) {
         Member m = memberRepository.findById(dto.getId())
                 .orElseThrow(() -> new MemberNotFoundException("회원이 없습니다."));
@@ -68,7 +60,6 @@ public class MemberService {
         m.setInfo(dto.getInfo());
     }
 
-    @Transactional
     public void changePassword(PasswordChangeDto dto) {
         Member m = memberRepository.findById(dto.getId())
                 .orElseThrow(() -> new MemberNotFoundException("회원이 없습니다."));
@@ -79,27 +70,31 @@ public class MemberService {
     }
 
     public void delete(String memberId) {
-        // 1) 존재 확인
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("회원이 없습니다."));
 
-        // 2) 연관 게시글 이름 업데이트
-        boardRepository.findByAuthorId(memberId)
+        // 게시글 FK 해제 + 이름 변경
+        boardRepository.findByAuthor_Id(memberId)
                 .forEach(post -> {
-                    post.setAuthorId(null);
+                    post.setAuthor(null);
                     post.setAuthorName("(탈퇴)");
                 });
 
-        // 3) 연관 댓글 이름 업데이트
-        commentRepository.findByAuthorId(memberId)
+        // 댓글 FK 해제 + 이름 변경
+        commentRepository.findByAuthor_Id(memberId)
                 .forEach(c -> {
-                    c.setAuthorId(null);
+                    c.setAuthor(null);
                     c.setAuthorName("(탈퇴)");
                 });
 
-        // 4) 실제 회원 삭제
+        // 실제 회원 삭제
         memberRepository.delete(member);
     }
 
-
+    @Transactional(readOnly = true)
+    public MemberProfileDto get(String id) {
+        return memberRepository
+                .findProjectedById(id)
+                .orElseThrow(() -> new MemberNotFoundException("회원이 없습니다."));
+    }
 }
