@@ -27,6 +27,6 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING) // DB 에는 "USER", "ADMIN" 문자열로 저장됨
     @Column(name = "role", nullable = false)
-    private Role role;
+    private MemberRole role;
 
 }

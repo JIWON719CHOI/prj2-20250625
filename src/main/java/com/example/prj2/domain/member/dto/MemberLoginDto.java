@@ -9,7 +9,7 @@ import java.io.Serializable;
  * DTO for {@link com.example.prj2.domain.member.entity.Member}
  */
 @Value
-public class LoginDto implements Serializable {
+public class MemberLoginDto implements Serializable {
     @NotBlank
     String id;
     @NotBlank

@@ -29,8 +29,7 @@ public class Board extends BaseEntity {
     @Column(name = "author_name", nullable = false)
     private String authorName;
 
-    // ↓ 여기만 바꿔주면 됩니다!
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private BoardType type;
+    private BoardType type = BoardType.GENERAL;  // ← 자바 필드 기본값
 }

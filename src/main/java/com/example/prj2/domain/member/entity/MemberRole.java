@@ -1,5 +1,5 @@
 package com.example.prj2.domain.member.entity;
 
-public enum Role {
+public enum MemberRole {
     USER, ADMIN
 }
