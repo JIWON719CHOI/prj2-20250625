@@ -1,4 +1,4 @@
-package com.example.prj2.domain.member.dto;
+package com.example.prj2.domain.admin.dto;
 
 import lombok.Value;
 
@@ -9,11 +9,10 @@ import java.time.LocalDateTime;
  * DTO for {@link com.example.prj2.domain.member.entity.Member}
  */
 @Value
-public class AdminMemberDto implements Serializable {
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+public class AdminMemberListDto implements Serializable {
     String id;
     String name;
-    String info;
     String role;
+    int reportCount;           // ✅ 신고 횟수
+    LocalDateTime createdAt;   // 가입일
 }

@@ -1,20 +1,16 @@
 package com.example.prj2.domain.member.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.Value;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link com.example.prj2.domain.member.entity.Member}
- */
-@Value
-public class MemberDetailDto implements Serializable {
-    LocalDateTime createdAt;
-    @NotBlank
-    String id;
-    @NotBlank
-    String name;
-    String info;
+// **클래스가 아니라 인터페이스**로 작성**
+public interface MemberDetailDto {
+    String getId();
+
+    String getName();
+
+    String getInfo();
+
+    LocalDateTime getCreatedAt();
+
+    LocalDateTime getUpdatedAt();
 }

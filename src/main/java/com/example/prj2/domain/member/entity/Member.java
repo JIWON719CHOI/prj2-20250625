@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +27,8 @@ public class Member extends BaseEntity {
     @Column(name = "info", length = 1000)
     private String info;
 
-    @ColumnDefault("'USER'")
-    @Lob
+    @Enumerated(EnumType.STRING) // DB 에는 "USER", "ADMIN" 문자열로 저장됨
     @Column(name = "role", nullable = false)
-    private String role;
+    private Role role;
 
 }
