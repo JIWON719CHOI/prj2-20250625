@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: commonHead('회원가입')}"></head>
+<head th:replace="~{fragments/head :: commonHead('로그인')}"></head>
 <body>
 
 <!-- 🧭 네비게이션 바 -->
@@ -12,34 +12,38 @@
             <div class="p-4 bg-light border">
                 <h2 class="mb-4 text-center">로그인</h2>
 
-                <form th:action="@{/members}" th:object="${MemberLoginDto}" method="post">
+                <!-- ✅ 로그인 폼 -->
+                <form th:action="@{/members/login}" th:object="${loginDto}" method="post">
+
                     <!-- 🔥 에러 메시지 -->
                     <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
                         <ul>
                             <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
                         </ul>
                     </div>
+                    <div th:if="${loginError}" class="alert alert-warning" th:text="${loginError}"></div>
+
 
                     <!-- 아이디 -->
                     <div class="mb-3">
                         <label for="id" class="form-label">아이디</label>
-                        <input type="text" class="form-control" id="id" th:value="${member == null ? '' : member.id}">
+                        <input type="text" class="form-control" id="id" th:field="*{id}">
                     </div>
 
                     <!-- 비밀번호 -->
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="password"
-                               th:value="${member == null ? '' : member.password}">
+                        <input type="password" class="form-control" id="password" th:field="*{password}">
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">가입하기</button>
-
+                    <button type="submit" class="btn btn-primary w-100">로그인</button>
                 </form>
+
             </div>
         </div>
     </div>
 </div>
+
 <!-- 📎 공통 JS -->
 <div th:replace="~{fragments/script :: commonScript}"></div>
 </body>

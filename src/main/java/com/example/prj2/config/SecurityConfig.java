@@ -29,10 +29,12 @@ public class SecurityConfig {
 
                 // 로그인 폼 설정
                 .formLogin(form -> form
-                        .loginPage("/members/login")
+                        .loginPage("/members/login")              // 로그인 폼 URL
+                        .loginProcessingUrl("/members/login")     // 로그인 처리 URL ← 이거 추가!
                         .defaultSuccessUrl("/board")
                         .permitAll()
                 )
+
 
                 // 로그아웃 설정
                 .logout(logout -> logout

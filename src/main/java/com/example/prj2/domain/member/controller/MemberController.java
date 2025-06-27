@@ -55,41 +55,34 @@ public class MemberController {
     // ─────────────────────────────────────────────────
 
     @GetMapping("/login")
-    public String loginForm() {
-        return "members/login";     // 로그인 폼 뷰
+    public String loginForm(Model model) {
+        if (!model.containsAttribute("loginDto")) {
+            model.addAttribute("loginDto", new MemberLoginDto());
+        }
+        return "members/login";
     }
 
     @PostMapping("/login")
     public String loginProcess(
-            @Valid @ModelAttribute MemberLoginDto dto,
+            @Valid @ModelAttribute("loginDto") MemberLoginDto dto,
             BindingResult br,
             HttpSession session,
-            RedirectAttributes rttr) {
-
+            Model model
+    ) {
         if (br.hasErrors()) {
-            rttr.addFlashAttribute("errors", br.getAllErrors());
-            rttr.addFlashAttribute("alert", Map.of(
-                    "code", "danger",
-                    "message", "아이디와 비밀번호를 입력해주세요"
-            ));
-            return "redirect:/members/login";
+            // 바인딩 오류가 있을 경우, 그대로 뷰 리턴 (redirect ❌)
+            return "members/login";
         }
 
         boolean ok = memberService.login(dto.getId(), dto.getPassword(), session);
         if (ok) {
-            rttr.addFlashAttribute("alert", Map.of(
-                    "code", "success",
-                    "message", "로그인 되었습니다."
-            ));
             return "redirect:/home";
         } else {
-            rttr.addFlashAttribute("alert", Map.of(
-                    "code", "warning",
-                    "message", "아이디 또는 비밀번호가 일치하지 않습니다."
-            ));
-            return "redirect:/members/login";
+            model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "members/login";
         }
     }
+
 
     @PostMapping("/logout")
     public String logout(HttpSession session, RedirectAttributes rttr) {
