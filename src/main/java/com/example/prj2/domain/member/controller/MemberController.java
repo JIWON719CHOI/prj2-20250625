@@ -36,24 +36,19 @@ public class MemberController {
     public String createMember(
             @Valid @ModelAttribute("signupDto") MemberSignupDto dto,
             BindingResult br,
+            Model model,               // ← RedirectAttributes 대신 Model
             RedirectAttributes rttr) {
 
         if (br.hasErrors()) {
-            rttr.addFlashAttribute("errors", br.getAllErrors());
-            rttr.addFlashAttribute("alert", Map.of(
-                    "code", "danger",
-                    "message", "필수 항목을 모두 입력해주세요"
-            ));
-            return "redirect:/members/new";
+            model.addAttribute("signupDto", dto);
+            return "members/signup";  // ← redirect 아님, 바로 뷰 리턴
         }
 
         memberService.add(dto);
-        rttr.addFlashAttribute("alert", Map.of(
-                "code", "success",
-                "message", "회원 가입되었습니다."
-        ));
-        return "redirect:/members/" + dto.getId() + "/edit";  // 곧바로 프로필 수정 페이지로
+        rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "가입 완료"));
+        return "redirect:/members/" + dto.getId() + "/edit";
     }
+
 
     // ─────────────────────────────────────────────────
     // 2) 로그인 / 로그아웃 (인증은 일반적으로 별도 컨트롤러로 분리하기도 합니다)
@@ -192,4 +187,5 @@ public class MemberController {
         ));
         return "redirect:/home";
     }
+
 }

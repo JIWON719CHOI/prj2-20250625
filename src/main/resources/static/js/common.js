@@ -1,7 +1,8 @@
 /*<![CDATA[*/
-let hasAlert = /*[[${alert != null}]]*/ false;
-if (hasAlert) {
-    const modal = new bootstrap.Modal(document.getElementById('alertModal'));
-    modal.show();
-}
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#alertModal')) {
+        var alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        alertModal.show();
+    }
+});
 /*]]>*/

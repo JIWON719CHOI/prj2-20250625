@@ -101,3 +101,7 @@ DROP TABLE comment;
 DROP TABLE chat;
 DROP TABLE reaction;
 DROP TABLE report;
+
+INSERT INTO member (id, password, name, role)
+VALUES ('admin', '암호화된_비번', '관리자', 'ADMIN');
+

@@ -19,3 +19,14 @@
     display: block !important;
 }
 
+.dropdown-menu.bg-black .dropdown-item {
+    background-color: black;
+    color: white;
+}
+
+.dropdown-menu.bg-black .dropdown-item:hover,
+.dropdown-menu.bg-black .dropdown-item:focus {
+    background-color: black !important; /* 호버해도 배경 유지 */
+    color: grey !important;
+}
+

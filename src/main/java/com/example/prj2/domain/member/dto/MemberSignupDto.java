@@ -3,16 +3,16 @@ package com.example.prj2.domain.member.dto;
 import com.example.prj2.domain.member.entity.Member;
 import com.example.prj2.domain.member.entity.MemberRole;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 import java.io.Serializable;
 
 /**
  * DTO for {@link com.example.prj2.domain.member.entity.Member}
  */
-@Value
-@NoArgsConstructor(force = true)  // 모든 final 필드를 null(default)로 초기화해주는 빈 생성자
+@Data
+@NoArgsConstructor
 public class MemberSignupDto implements Serializable {
     @NotBlank
     String id;
@@ -20,6 +20,7 @@ public class MemberSignupDto implements Serializable {
     String password;
     @NotBlank
     String name;
+    String info;
 
     // ✅ Entity로 변환하는 메서드
     public Member toEntity() {

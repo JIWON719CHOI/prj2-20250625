@@ -1,48 +1,48 @@
 <!-- 🗺️ 네비게이션 바 -->
-<nav th:fragment="navbar(current)" class="navbar navbar-light bg-light shadow-sm mb-4">
+<nav th:fragment="navbar(current)" class="navbar navbar-dark bg-dark shadow-sm mb-4">
     <div class="container">
 
         <!-- 왼쪽 로고 -->
         <a class="navbar-brand" th:href="@{/home}">HOME</a>
 
-        <!-- 오른쪽 햄버거 + 회원정보 -->
+        <!-- 오른쪽 -->
         <div class="d-flex align-items-center gap-2 ms-auto">
 
-            <!-- 햄버거 버튼: 항상 보임, 접었다 펼침 토글 -->
+            <!-- 회원정보 드롭다운 -->
+            <div class="dropdown">
+                <button class="btn btn-link nav-link dropdown-toggle p-0 text-white" type="button"
+                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle" style="font-size: 1.25rem;"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end bg-black text-white" aria-labelledby="userDropdown">
+                    <li th:if="${session.loginUser != null}">
+                        <a class="dropdown-item" th:href="@{/members/{id}(id=${session.loginUser})}">
+                            <i class="bi bi-person-fill me-1 bg-black text-white"></i>
+                            <span th:text="${session.loginUser}">내 정보</span>
+                        </a>
+                    </li>
+                    <li th:if="${session.loggedInUser != null}">
+                        <a class="dropdown-item text-white" th:href="@{/members/logout}">로그아웃</a>
+                    </li>
+                    <li th:if="${session.loggedInUser == null}">
+                        <a class="dropdown-item text-white" th:href="@{/members/login}">로그인</a>
+                    </li>
+                    <li th:if="${session.loginUser == null}">
+                        <a class="dropdown-item text-white" th:href="@{/members/new}">회원 가입</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 햄버거 -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarContent" aria-controls="navbarContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- 회원정보 드롭다운 -->
-            <div class="dropdown">
-                <button class="btn btn-link nav-link dropdown-toggle p-0" type="button"
-                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    👤
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li th:if="${session.loggedInUser != null}">
-                        <a class="dropdown-item" th:href="@{/members/detail(id=${session.loggedInUser.id})}">
-                            🙋‍♀️
-                            <span th:text="${session.loggedInUser?.nickName}">내 정보</span>
-                        </a>
-                    </li>
-                    <li th:if="${session.loggedInUser != null}">
-                        <a class="dropdown-item" th:href="@{/members/logout}">로그아웃</a>
-                    </li>
-                    <li th:if="${session.loggedInUser == null}">
-                        <a class="dropdown-item" th:href="@{/members/login}">로그인</a>
-                    </li>
-                    <li th:if="${session.loggedInUser == null}">
-                        <a class="dropdown-item" th:href="@{/members/signup}">회원 가입</a>
-                    </li>
-                </ul>
-            </div>
-
         </div>
 
-        <!-- 접었다 펼치는 메뉴 -->
+        <!-- 접히는 메뉴 -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
             <ul class="navbar-nav gap-3 py-3">
                 <li class="nav-item">
@@ -57,9 +57,10 @@
                         게시물 작성
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/members/list}"
-                       th:classappend="${current == 'memberList' ? 'active fw-bold' : ''}">
+                <li class="nav-item"
+                    th:if="${session.loggedInUser != null and session.loggedInUser.role == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/members}"
+                       th:classappend="${current == 'adminMemberList' ? 'active fw-bold' : ''}">
                         회원 목록
                     </a>
                 </li>

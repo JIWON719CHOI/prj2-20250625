@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: commonHead('회원가입')}"></head>
+<body>
+
+<!-- 🧭 네비게이션 바 -->
+<div th:replace="~{fragments/navbar :: navbar('home')}"></div>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- 여기에 실제 박스 내용 -->
+            <div class="p-4 bg-light border">
+                <h2 class="mb-4 text-center">회원가입</h2>
+
+                <!-- ✅ 회원가입 폼 -->
+                <form th:action="@{/members}" th:object="${signupDto}" method="post">
+
+                    <!-- 🔥 에러 메시지 -->
+                    <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                        </ul>
+                    </div>
+
+                    <!-- 아이디 -->
+                    <div class="mb-3">
+                        <label for="id" class="form-label">아이디</label>
+                        <input type="text" class="form-control" id="id" th:field="*{id}" placeholder="필수 입력">
+                    </div>
+
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="password" th:field="*{password}"
+                               placeholder="필수 입력">
+                    </div>
+
+                    <!-- 이름 -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">이름</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="필수 입력">
+                    </div>
+
+                    <!-- 자기소개 (info는 선택 사항이라면 Dto에 포함해도 되고 안 해도 돼) -->
+                    <div class="mb-3">
+                        <label for="info" class="form-label">자기소개</label>
+                        <textarea class="form-control" id="info" rows="3" th:field="*{info}"
+                                  placeholder="자기소개 입력 (선택)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">가입하기</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 📎 공통 JS -->
+<div th:replace="~{fragments/script :: commonScript}"></div>
+</body>
+</html>
